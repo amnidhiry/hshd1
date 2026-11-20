@@ -3829,9 +3829,10 @@ function buildItemDoc(q, num, showAns, ans, strikes, marked, prefs) {
   d.querySelector('.ITSStemSequence').innerHTML = num + '.&nbsp;&nbsp;';
   d.querySelector('.ITSStemText > div').innerHTML = fmt(q.stem) + (q.columns ? '<div style="margin:14px 0 0 2.5em;font-weight:bold;' + colGrid(q, true) + '">' + q.columns.map(function (c) { return '<span>' + esc(c) + '</span>'; }).join('') + '</div>' : '');
   var gal = d.querySelector('.mg-parent'); gal = gal && gal.closest('div[align]');
-  if (q.image) {
-    d.querySelectorAll('img[id^="itsMediaCanvas"], .iw-mg-media img').forEach(function (im) { im.setAttribute('src', q.image); im.removeAttribute('width'); im.removeAttribute('height'); im.style.maxWidth = '100%'; im.removeAttribute('onerror'); });
-    var pan = d.querySelector('.mg-panels img'); if (pan) pan.style.maxHeight = '420px';
+  if (q.image && gal) {
+    var fig = d.createElement('div'); fig.style.cssText = 'margin:10px 0 18px 2.5em';
+    var im = d.createElement('img'); im.setAttribute('src', q.image); im.style.cssText = 'max-width:min(100%,640px);height:auto;display:block;border:1px solid #9aa3af'; fig.appendChild(im);
+    var sb = d.querySelector('.ITSStem'); sb.parentNode.insertBefore(fig, sb.nextSibling); gal.remove();
   } else if (gal) gal.remove();
   var wrap = d.querySelector('.optionOutline'), blocks = wrap.querySelectorAll('.ITSMCOptionTable'), tpl = blocks[0].outerHTML;
   wrap.innerHTML = '';
